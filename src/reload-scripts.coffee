@@ -30,6 +30,8 @@ module.exports = (robot) ->
       console.log "Hubot reloader:", error
       msg.send "Could not reload all scripts: #{error}"
 
+module.exports.reloadAllScripts = reloadAllScripts
+
 success = (msg) ->
   # Cleanup old listeners and help
   for listener in oldListeners
