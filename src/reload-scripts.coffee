@@ -17,20 +17,23 @@ oldListeners = null
 module.exports = (robot) ->
 
   robot.respond /reload/i, id:'reload-scripts.reload',  (msg) ->
-    try
-      oldCommands = robot.commands
-      oldListeners = robot.listeners
+    runReloadAllScripts(robot, msg)
 
-      robot.commands = []
-      robot.listeners = []
+  global.reloadAllScripts = runReloadAllScripts
 
-      reloadAllScripts msg, success, (err) ->
-        msg.send err
-    catch error
-      console.log "Hubot reloader:", error
-      msg.send "Could not reload all scripts: #{error}"
+runReloadAllScripts = (robot, msg) ->
+  try
+    oldCommands = robot.commands
+    oldListeners = robot.listeners
 
-module.exports.reloadAllScripts = reloadAllScripts
+    robot.commands = []
+    robot.listeners = []
+
+    reloadAllScripts msg, success, (err) ->
+      msg.send err
+  catch error
+    console.log "Hubot reloader:", error
+    msg.send "Could not reload all scripts: #{error}"
 
 success = (msg) ->
   # Cleanup old listeners and help
